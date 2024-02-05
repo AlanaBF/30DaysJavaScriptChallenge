@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="https://fav.farm/🔥" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div id="player"></div>
+      <div class="speed">
+        <div class="speed-bar">1×</div>
+      </div>
+    </div>
+
+    <script>
+      const speed = document.querySelector(".speed");
+      const bar = speed.querySelector(".speed-bar");
+      const video = document.querySelector(".flex");
+      let player;
+
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player("player", {
+          height: "430",
+          width: "765",
+          videoId: "tQvwiOWpj7o",
+          events: {
+            onReady: onPlayerReady,
+          },
+        });
+      }
+
+      function onPlayerReady(event) {
+        speed.addEventListener("mousemove", handleMove);
+      }
+
+      function handleMove(e) {
+        const y = e.pageY - this.offsetTop;
+        const percent = y / this.offsetHeight;
+        const min = 0.4;
+        const max = 4;
+        const height = Math.round(percent * 100) + "%";
+        const playbackRate = percent * (max - min) + min;
+        bar.style.height = height;
+        bar.textContent = playbackRate.toFixed(2) + "×";
+        player.setPlaybackRate(playbackRate);
+      }
+    </script>
+
+    <script src="https://www.youtube.com/iframe_api"></script>
+  </body>
+</html>
